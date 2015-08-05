@@ -5137,14 +5137,18 @@ S2.define('select2/core',[
 
     this.on('keypress', function (evt) {
       var key = evt.which;
+	  var selectOnTab = this.options.get('selectOnTab');
+	  if (typeof selectOnTab == 'undefined') {
+		   selectOnTab = true;
+	  }
 
       if (self.isOpen()) {
-        if (key === KEYS.ESC || key === KEYS.TAB ||
+        if (key === KEYS.ESC || (key === KEYS.TAB && !selectOnTab) ||
             (key === KEYS.UP && evt.altKey)) {
           self.close();
 
           evt.preventDefault();
-        } else if (key === KEYS.ENTER) {
+        } else if (key === KEYS.ENTER || (key === KEYS.TAB && selectOnTab)) {
           self.trigger('results:select');
 
           evt.preventDefault();
